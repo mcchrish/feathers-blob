@@ -1,19 +1,12 @@
 import AWS from 'aws-sdk';
-import Store from 's3-blob-store'
+import FsBlobStore from 'fs-blob-store';
+import { join } from 'path';
 import feathers from 'feathers';
 import rest from 'feathers-rest';
 import bodyParser from 'body-parser';
 import BlobService from '../src';
 
-const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-});
-
-const blobStore = Store({
-  client: s3,
-  bucket: 'feathers-blob-store'
-});
+const blobStore = FsBlobStore(join(__dirname, 'blobs'));
 
 const blobService = BlobService({
   Model: blobStore
